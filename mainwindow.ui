@@ -161,7 +161,7 @@
      <string>Загрузить из файла</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="convert_but_3">
+   <widget class="QPushButton" name="save_but">
     <property name="geometry">
      <rect>
       <x>190</x>
