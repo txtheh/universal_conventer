@@ -11,6 +11,21 @@ qt_add_executable(universal_conventer
     mainwindow.cpp
     mainwindow.h
     mainwindow.ui
+    biginteger.h
+    biginteger.cpp
+    bigfraction.h
+    bigfraction.cpp
+    inputparser.h
+    inputparser.cpp
+    baseconverter.h
+    baseconverter.cpp
+    inputparser.h
+    inputparser.h
+    inputparser.h
+    inputparser.h
+    inputparser.cpp
+    baseconverter.h
+    baseconverter.cpp
 )
 
 target_link_libraries(universal_conventer
