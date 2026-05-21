@@ -17,19 +17,19 @@ std::vector<long long> InputParser::tokenize(const std::string& s, long long bas
 
             int j = s.find(']', i);
             if (j == (int)std::string::npos)
-                throw std::invalid_argument("Ошибка: не закрыта квадратная скобка");
+                throw std::invalid_argument("не закрыта квадратная скобка");
             std::string inside = s.substr(i + 1, j - i - 1);
             if (inside.empty())
-                throw std::invalid_argument("Ошибка: пустые квадратные скобки");
+                throw std::invalid_argument("пустые квадратные скобки");
             long long val = std::stoll(inside);
             if (val >= base)
-                throw std::invalid_argument("Ошибка: цифра [" + inside + "] недопустима в основании " + std::to_string(base));
+                throw std::invalid_argument("цифра [" + inside + "] недопустима в основании " + std::to_string(base));
             result.push_back(val);
             i = j + 1;
         } else {
             long long val = charToDigit(s[i]);
             if (val < 0 || val >= base)
-                throw std::invalid_argument("Ошибка: недопустимый символ '" + std::string(1, s[i]) + "'");
+                throw std::invalid_argument("недопустимый символ '" + std::string(1, s[i]) + "'");
             result.push_back(val);
             i++;
         }
@@ -49,7 +49,7 @@ BigInteger InputParser::digitsToInteger(const std::vector<long long>& digits, lo
 
 BigFraction InputParser::parse(const std::string& input, long long base) {
     if (input.empty())
-        throw std::invalid_argument("Ошибка: входная строка пуста");
+        throw std::invalid_argument("входная строка пуста");
 
     int dotPos = -1;
     int periodOpen = -1;
@@ -62,7 +62,7 @@ BigFraction InputParser::parse(const std::string& input, long long base) {
         if (inSquare) continue;
         if (input[i] == '.') {
             if (dotPos != -1)
-                throw std::invalid_argument("Ошибка: более одной точки");
+                throw std::invalid_argument("более одной точки");
             dotPos = i;
         }
         if (input[i] == '(') periodOpen = i;
@@ -75,25 +75,25 @@ BigFraction InputParser::parse(const std::string& input, long long base) {
         intPart = input;
     } else if (dotPos != -1 && periodOpen == -1) {
         if (dotPos == 0)
-            throw std::invalid_argument("Ошибка: отсутствует целая часть");
+            throw std::invalid_argument("отсутствует целая часть");
         if (dotPos == (int)input.size() - 1)
-            throw std::invalid_argument("Ошибка: отсутствует дробная часть после точки");
+            throw std::invalid_argument("отсутствует дробная часть после точки");
         intPart = input.substr(0, dotPos);
         fracPart = input.substr(dotPos + 1);
     } else if (dotPos != -1 && periodOpen != -1) {
         if (dotPos == 0)
-            throw std::invalid_argument("Ошибка: отсутствует целая часть");
+            throw std::invalid_argument("отсутствует целая часть");
         if (periodClose == -1)
-            throw std::invalid_argument("Ошибка: не закрыта скобка периода");
+            throw std::invalid_argument("не закрыта скобка периода");
         if (periodClose != (int)input.size() - 1)
-            throw std::invalid_argument("Ошибка: после закрывающей скобки периода не должно быть других символов");
+            throw std::invalid_argument("после закрывающей скобки периода не должно быть других символов");
         if (periodClose == periodOpen + 1)
-            throw std::invalid_argument("Ошибка: период не может быть пустым");
+            throw std::invalid_argument("период не может быть пустым");
         intPart = input.substr(0, dotPos);
         fracPart = input.substr(dotPos + 1, periodOpen - dotPos - 1);
         periodPart = input.substr(periodOpen + 1, periodClose - periodOpen - 1);
     } else {
-        throw std::invalid_argument("Ошибка: некорректный формат числа");
+        throw std::invalid_argument("некорректный формат числа");
     }
 
     BigInteger b(base);

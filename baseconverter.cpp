@@ -40,7 +40,9 @@ BaseConverter::Result BaseConverter::fractionToBase(
         seen[remainder] = pos;
 
         remainder = remainder * base;
-        long long digit = (remainder / denom) % q;
+        BigInteger digitBig = remainder / denom;
+        long long digit = digitBig % q;
+        remainder = remainder % denom;
         fracDigits += digitToStr(digit);
         remainder = remainder % denom;
         pos++;

@@ -113,11 +113,11 @@ BigInteger BigInteger::operator*(long long n) const {
 BigInteger BigInteger::multiplySimple(const BigInteger& b) const {
     BigInteger res;
     res.digits.assign(digits.size() + b.digits.size(), 0);
-    for (int i = 0; i < digits.size(); i++) {
+    for (int i = 0; i < (int)digits.size(); i++) {
         long long c = 0;
-        for (int j = 0; j < b.digits.size() || c; j++) {
+        for (int j = 0; j < (int)b.digits.size() || c; j++) {
             long long cur = res.digits[i + j] + c;
-            if (j < b.digits.size())
+            if (j < (int)b.digits.size())
                 cur += (long long)digits[i] * b.digits[j];
             res.digits[i + j] = cur % BASE;
             c = cur / BASE;
@@ -127,27 +127,26 @@ BigInteger BigInteger::multiplySimple(const BigInteger& b) const {
     return res;
 }
 
-BigInteger shiftLeft(const BigInteger& a, int n) {
-    if (a.isZero()) return a;
-    BigInteger res;
-    res.digits.assign(n, 0);
-    for (int x : a.digits) res.digits.push_back(x);
-    return res;
-}
-
 BigInteger BigInteger::multiplyKaratsuba(const BigInteger& b) const {
-    if (digits.size() <= 32 || b.digits.size() <= 32)
+    if (isZero() || b.isZero())
+        return BigInteger();
+
+    if ((int)digits.size() <= 32 || (int)b.digits.size() <= 32)
         return multiplySimple(b);
 
     int m = std::max(digits.size(), b.digits.size()) / 2;
 
-    BigInteger a0, a1;
-    a0.digits = std::vector<int>(digits.begin(), digits.begin() + std::min(m, (int)digits.size()));
-    a1.digits = (digits.size() > m) ? std::vector<int>(digits.begin() + m, digits.end()) : std::vector<int>{0};
+    BigInteger a0, a1, b0, b1;
 
-    BigInteger b0, b1;
-    b0.digits = std::vector<int>(b.digits.begin(), b.digits.begin() + std::min(m, (int)b.digits.size()));
-    b1.digits = (b.digits.size() > m) ? std::vector<int>(b.digits.begin() + m, b.digits.end()) : std::vector<int>{0};
+    for (int i = 0; i < std::min(m, (int)digits.size()); ++i)
+        a0.digits.push_back(digits[i]);
+    for (int i = m; i < (int)digits.size(); ++i)
+        a1.digits.push_back(digits[i]);
+
+    for (int i = 0; i < std::min(m, (int)b.digits.size()); ++i)
+        b0.digits.push_back(b.digits[i]);
+    for (int i = m; i < (int)b.digits.size(); ++i)
+        b1.digits.push_back(b.digits[i]);
 
     a0.removeLeadingZeros(); a1.removeLeadingZeros();
     b0.removeLeadingZeros(); b1.removeLeadingZeros();
@@ -156,7 +155,12 @@ BigInteger BigInteger::multiplyKaratsuba(const BigInteger& b) const {
     BigInteger z2 = a1.multiplyKaratsuba(b1);
     BigInteger z1 = (a0 + a1).multiplyKaratsuba(b0 + b1) - z0 - z2;
 
-    return shiftLeft(z2, 2*m) + shiftLeft(z1, m) + z0;
+    z2.digits.insert(z2.digits.begin(), 2 * m, 0);
+    z1.digits.insert(z1.digits.begin(), m, 0);
+
+    BigInteger res = z2 + z1 + z0;
+    res.removeLeadingZeros();
+    return res;
 }
 
 BigInteger BigInteger::operator*(const BigInteger& b) const {

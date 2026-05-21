@@ -35,16 +35,16 @@ void MainWindow::onConvertClicked() {
 
     if (!pOk || p < 2 || p > 500) {
         ui->mistakes_field->setPlainText(
-            "Ошибка: должно быть целым числом от 2 до 500.");
+            "должно быть целым числом от 2 до 500.");
         return;
     }
     if (!qOk || q < 2 || q > 500) {
         ui->mistakes_field->setPlainText(
-            "Ошибка: должно быть целым числом от 2 до 500.");
+            "должно быть целым числом от 2 до 500.");
         return;
     }
     if (inputStr.isEmpty()) {
-        ui->mistakes_field->setPlainText("Ошибка: введите число");
+        ui->mistakes_field->setPlainText("введите число");
         return;
     }
     try {
@@ -72,7 +72,7 @@ void MainWindow::onLoadFileClicked() {
 
     QFile file(path);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        ui->mistakes_field->setPlainText("Ошибка: не удалось открыть файл.");
+        ui->mistakes_field->setPlainText("не удалось открыть файл.");
         return;
     }
 
@@ -89,7 +89,7 @@ void MainWindow::onLoadFileClicked() {
 
 void MainWindow::onSaveFileClicked() {
     if (lastOutput.isEmpty()) {
-        ui->mistakes_field->setPlainText("Ошибка: нечего сохранять.");
+        ui->mistakes_field->setPlainText("нечего сохранять.");
         return;
     }
 
@@ -99,7 +99,7 @@ void MainWindow::onSaveFileClicked() {
 
     QFile file(path);
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-        ui->mistakes_field->setPlainText("Ошибка: не удалось сохранить файл.");
+        ui->mistakes_field->setPlainText("не удалось сохранить файл.");
         return;
     }
 

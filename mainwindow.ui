@@ -24,7 +24,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Основание p (исходное)</string>
+     <string>Основание p </string>
     </property>
    </widget>
    <widget class="QLabel" name="label_2">
@@ -37,7 +37,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Основание q (исходное)</string>
+     <string>Основание q </string>
     </property>
    </widget>
    <widget class="QLineEdit" name="input_p">
